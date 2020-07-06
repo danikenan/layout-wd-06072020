@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
     boxSizing: "border-box"
   },
   chartSide: {
-    width: initialSideWidth,
     backgroundColor: "teal"
   }
 }));
@@ -61,7 +60,15 @@ const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
       <div className={classes.mainChartWrapper}>
         <div className={classes.chartHeader}>
           chart header
-          <Button color="primary" variant="contained">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              setSideWidth((prevState) =>
+                prevState === initialSideWidth ? 0 : initialSideWidth
+              );
+            }}
+          >
             toggle side
           </Button>
         </div>
@@ -79,7 +86,7 @@ const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
               }}
             />
           </div>
-          <div className={classes.chartSide} />
+          <div className={classes.chartSide} style={{ width: sideWidth }} />
         </div>
       </div>
       {arrayToAdd.map(() => (
