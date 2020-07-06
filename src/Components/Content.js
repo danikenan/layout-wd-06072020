@@ -5,59 +5,59 @@ import InnerControls from "./InnerControls";
 import { withResizeDetector } from "react-resize-detector";
 import { Button } from "@material-ui/core";
 
-const margin = 20;
-const initialSideWidth = 120;
-const transition = "0.2s ease-in-out";
-
-const useStyles = makeStyles((theme) => ({
-  contentRoot: {
-    padding: margin,
-    flex: 1,
-    boxSizing: "border-box"
-  },
-  mainChartWrapper: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  mainChartInnerWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    overflow: "hidden",
-    position: "relative"
-  },
-  chartHeader: {
-    height: 50,
-    backgroundColor: "black",
-    color: "white",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flexWrap: "wrap"
-  },
-  mainChart: {
-    backgroundColor: "mintcream",
-    border: 1,
-    borderStyle: "solid",
-    boxSizing: "border-box",
-    transition,
-    width: (props) => props.mainChartWidth,
-    height: (props) => props.outsideHeight - margin * 2 - 50,
-    zIndex: 10
-  },
-  chartSide: {
-    transition,
-    backgroundColor: "teal",
-    width: initialSideWidth,
-    position: "absolute",
-    right: 0,
-    top: 0,
-    bottom: 0,
-    transform: (props) => `translate(${props.sideWidth === 0 ? "120px" : 0})`
-  },
-  chartSideHidden: {
-    backgroundColor: "blue"
-  }
-}));
+const initialSideWidth = 160;
+const useStyles = makeStyles((theme) => {
+  const transition = "0.2s ease-in-out";
+  const generalMargin = theme.spacing(2);
+  const headerHeight = theme.spacing(7);
+  return {
+    contentRoot: {
+      padding: generalMargin,
+      flex: 1,
+      boxSizing: "border-box"
+    },
+    mainChartWrapper: {
+      display: "flex",
+      flexDirection: "column"
+    },
+    mainChartInnerWrapper: {
+      display: "flex",
+      justifyContent: "space-between",
+      overflow: "hidden",
+      position: "relative"
+    },
+    chartHeader: {
+      padding: `0 ${theme.spacing(2)}px`,
+      height: headerHeight,
+      backgroundColor: "black",
+      color: "white",
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      flexWrap: "wrap",
+      alignItems: "center",
+      fontSize: 20
+    },
+    mainChart: {
+      backgroundColor: "mintcream",
+      boxSizing: "border-box",
+      transition,
+      width: (props) => props.mainChartWidth,
+      height: (props) => props.outsideHeight - generalMargin * 2 - headerHeight
+    },
+    chartSide: {
+      transition,
+      backgroundColor: "teal",
+      width: initialSideWidth,
+      position: "absolute",
+      right: 0,
+      top: 0,
+      bottom: 0,
+      transform: (props) =>
+        `translate(${props.sideWidth === 0 ? `${initialSideWidth}px` : 0})`
+    }
+  };
+});
 
 const Content = ({ onAddChart, width, outsideHeight }) => {
   const [sideWidth, setSideWidth] = useState(initialSideWidth);
