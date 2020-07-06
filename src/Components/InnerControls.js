@@ -3,7 +3,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, TextField } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    padding: 50
+  },
+  text: {
+    margin: 50
+  },
   button: {
     marginLeft: 20
   }
@@ -15,7 +20,9 @@ const InnerControls = ({ onChangeArray }) => {
 
   return (
     <div className={classes.root}>
-      <div>this component gets its dimensions from the outside</div>
+      <div className={classes.text}>
+        this component gets its dimensions from the outside
+      </div>
       <TextField
         value={numOfItemsToAdd}
         label="number of items to add"

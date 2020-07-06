@@ -6,7 +6,9 @@ import { withResizeDetector } from "react-resize-detector";
 import { Button } from "@material-ui/core";
 
 const margin = 20;
-const initialSideWidth = 100;
+const initialSideWidth = 120;
+const transition = "width 0.2s ease-in-out";
+
 const useStyles = makeStyles((theme) => ({
   contentRoot: {
     padding: margin,
@@ -18,11 +20,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column"
   },
   mainChartInnerWrapper: {
-    display: "flex"
+    display: "flex",
+    justifyContent: "space-between"
   },
   chartHeader: {
     height: 50,
-    backgroundColor: "aliceblue",
+    backgroundColor: "black",
+    color: "white",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -32,21 +36,22 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "mintcream",
     border: 1,
     borderStyle: "solid",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    transition
   },
   chartSide: {
-    backgroundColor: "teal"
+    backgroundColor: "teal",
+    transition
   }
 }));
 
 const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
   const classes = useStyles({ dimensions });
   const [sideWidth, setSideWidth] = useState(initialSideWidth);
-
-  const [arrayToAdd, setArrayToAdd] = useState([]);
   const [mainChartWidth, setMainChartWidth] = useState(width - sideWidth);
 
-  console.log(mainChartWidth);
+  const [arrayToAdd, setArrayToAdd] = useState([]);
+
   useEffect(() => {
     onAddChart();
   }, [arrayToAdd, onAddChart]);

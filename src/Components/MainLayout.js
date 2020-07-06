@@ -52,11 +52,9 @@ const MainLayout = (props) => {
   const endRef = useRef(null);
 
   const handleAddChart = () => {
-    console.log("should scroll");
     endRef.current.scrollIntoView({ behavior: "smooth" });
-
-    // contentWrapperRef.current.scrollToBottom();
   };
+
   return (
     <div className={classes.root}>
       <div className={classes.header}></div>
