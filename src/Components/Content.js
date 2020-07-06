@@ -7,7 +7,7 @@ import { Button } from "@material-ui/core";
 
 const margin = 20;
 const initialSideWidth = 120;
-const transition = "width 0.2s ease-in-out";
+const transition = "0.2s ease-in-out";
 
 const useStyles = makeStyles((theme) => ({
   contentRoot: {
@@ -21,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
   },
   mainChartInnerWrapper: {
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    overflow: "hidden",
+    position: "relative"
   },
   chartHeader: {
     height: 50,
@@ -37,16 +39,27 @@ const useStyles = makeStyles((theme) => ({
     border: 1,
     borderStyle: "solid",
     boxSizing: "border-box",
-    transition
+    transition,
+    width: (props) => props.mainChartWidth,
+    height: (props) => props.outsideHeight - margin * 2 - 50,
+    zIndex: 10
   },
   chartSide: {
+    transition,
     backgroundColor: "teal",
-    transition
+    width: initialSideWidth,
+    position: "absolute",
+    right: 0,
+    top: 0,
+    bottom: 0,
+    transform: (props) => `translate(${props.sideWidth === 0 ? "120px" : 0})`
+  },
+  chartSideHidden: {
+    backgroundColor: "blue"
   }
 }));
 
-const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
-  const classes = useStyles({ dimensions });
+const Content = ({ onAddChart, width, outsideHeight }) => {
   const [sideWidth, setSideWidth] = useState(initialSideWidth);
   const [mainChartWidth, setMainChartWidth] = useState(width - sideWidth);
 
@@ -59,6 +72,8 @@ const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
   useEffect(() => {
     setMainChartWidth(width - sideWidth);
   }, [width, sideWidth]);
+
+  const classes = useStyles({ sideWidth, mainChartWidth, outsideHeight });
 
   return (
     <div className={classes.contentRoot}>
@@ -78,20 +93,14 @@ const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
           </Button>
         </div>
         <div className={classes.mainChartInnerWrapper}>
-          <div
-            className={classes.mainChart}
-            style={{
-              width: mainChartWidth,
-              height: outsideHeight - margin * 2 - 50
-            }}
-          >
+          <div className={classes.mainChart}>
             <InnerControls
               onChangeArray={(newArray) => {
                 setArrayToAdd(newArray);
               }}
             />
           </div>
-          <div className={classes.chartSide} style={{ width: sideWidth }} />
+          <div className={classes.chartSide}>side</div>
         </div>
       </div>
       {arrayToAdd.map(() => (
