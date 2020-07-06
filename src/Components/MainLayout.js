@@ -52,6 +52,9 @@ const MainLayout = (props) => {
   const endRef = useRef(null);
 
   const handleAddChart = () => {
+    console.log("should scroll");
+    endRef.current.scrollIntoView({ behavior: "smooth" });
+
     // contentWrapperRef.current.scrollToBottom();
   };
   return (
@@ -64,7 +67,7 @@ const MainLayout = (props) => {
             <div className={classes.contentWrapper}>
               <div className={classes.content}>
                 <Content outsideHeight={height} onAddChart={handleAddChart} />
-                {/* <div ref={endRef} /> */}
+                <div ref={endRef} />
               </div>
             </div>
           )}

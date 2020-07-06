@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ExtraChart from "./ExtraChart";
 import InnerControls from "./InnerControls";
@@ -27,8 +27,11 @@ const useStyles = makeStyles((theme) => ({
 const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
   const classes = useStyles({ dimensions });
 
-  console.log("width", width);
   const [arrayToAdd, setArrayToAdd] = useState([]);
+
+  useEffect(() => {
+    onAddChart();
+  }, [arrayToAdd, onAddChart]);
 
   return (
     <div className={classes.contentRoot}>
@@ -45,7 +48,7 @@ const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
           }}
         />
       </div>
-      {arrayToAdd.map((item) => (
+      {arrayToAdd.map(() => (
         <ExtraChart />
       ))}
     </div>

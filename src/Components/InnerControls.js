@@ -46,16 +46,6 @@ const InnerControls = ({ onChangeArray }) => {
       >
         clear items
       </Button>
-      <Button
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          //  onScrollToBottom()
-        }}
-      >
-        scroll to bottom
-      </Button>
     </div>
   );
 };
