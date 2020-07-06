@@ -1,46 +1,55 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDimensions } from "../Hooks/useDimensions";
+import ExtraChart from "./ExtraChart";
+import InnerControls from "./InnerControls";
+import { withResizeDetector } from "react-resize-detector";
 
 const margin = 20;
 const useStyles = makeStyles((theme) => ({
-  root: {
+  contentRoot: {
+    padding: margin,
     flex: 1,
-    paddingTop: margin,
-    paddingLeft: margin
+    boxSizing: "border-box"
   },
   mainChart: {
     backgroundColor: "mintcream",
     border: 1,
     borderStyle: "solid",
     boxSizing: "border-box"
-  },
-  highSomething: {
-    height: 2000
   }
+
+  // highSomething: {
+  //   height: 2000,
+  //   backgroundColor: "green"
+  // }
 }));
 
-const Content = ({ dimensions }) => {
+const Content = ({ dimensions, onAddChart, width, outsideHeight }) => {
   const classes = useStyles({ dimensions });
-  const myRef = useRef(null);
 
-  const [innerDimensions] = useDimensions(myRef);
+  console.log("width", width);
+  const [arrayToAdd, setArrayToAdd] = useState([]);
 
-  console.log(innerDimensions);
   return (
-    <div className={classes.root} ref={myRef}>
+    <div className={classes.contentRoot}>
       <div
         className={classes.mainChart}
         style={{
-          width: innerDimensions.width - margin * 2,
-          height: dimensions.height - margin * 2
+          width: width,
+          height: outsideHeight - margin * 2 - 1
         }}
       >
-        this component gets its dimensions fixed
+        <InnerControls
+          onChangeArray={(newArray) => {
+            setArrayToAdd(newArray);
+          }}
+        />
       </div>
-      <div className={classes.highSomething} />
+      {arrayToAdd.map((item) => (
+        <ExtraChart />
+      ))}
     </div>
   );
 };
 
-export default Content;
+export default withResizeDetector(Content);

@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Content from "./Content";
-import { useDimensions } from "../Hooks/useDimensions";
+import ReactResizeDetector from "react-resize-detector";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,19 +49,26 @@ const useStyles = makeStyles((theme) => ({
 
 const MainLayout = (props) => {
   const classes = useStyles();
-  const contentWrapperRef = useRef(null);
+  const endRef = useRef(null);
 
-  const [dimensions] = useDimensions(contentWrapperRef);
+  const handleAddChart = () => {
+    // contentWrapperRef.current.scrollToBottom();
+  };
   return (
     <div className={classes.root}>
       <div className={classes.header}></div>
       <div className={classes.main}>
         <div className={classes.navbar}></div>
-        <div className={classes.contentWrapper} ref={contentWrapperRef}>
-          <div className={classes.content}>
-            <Content dimensions={dimensions} />
-          </div>
-        </div>
+        <ReactResizeDetector handleHeight>
+          {({ height }) => (
+            <div className={classes.contentWrapper}>
+              <div className={classes.content}>
+                <Content outsideHeight={height} onAddChart={handleAddChart} />
+                {/* <div ref={endRef} /> */}
+              </div>
+            </div>
+          )}
+        </ReactResizeDetector>
       </div>
     </div>
   );
