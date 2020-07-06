@@ -34,13 +34,11 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     overflow: "auto",
     position: "relative",
-    padding: theme.spacing.l2,
     display: "flex"
   },
   content: {
     display: "flex",
     flexDirection: "column",
-    boxSizing: "border-box",
     width: "100%",
     flex: 1,
     overflow: "visible"
@@ -64,7 +62,10 @@ const MainLayout = (props) => {
           {({ height }) => (
             <div className={classes.contentWrapper}>
               <div className={classes.content}>
-                <Content outsideHeight={height} onAddChart={handleAddChart} />
+                <Content
+                  outsideHeight={height}
+                  onChangeExtraCharts={handleAddChart}
+                />
                 <div ref={endRef} />
               </div>
             </div>

@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ExtraChart from "./ExtraChart";
 import InnerControls from "./InnerControls";
 import { withResizeDetector } from "react-resize-detector";
 import { Button } from "@material-ui/core";
 
-const initialSideWidth = 160;
+const transitionDuration = 250;
 const useStyles = makeStyles((theme) => {
-  const transition = "0.2s ease-in-out";
+  const initialSideWidth = theme.spacing(30);
+  const transitionTimingFunction = theme.transitions.easing.easeInOut;
   const generalMargin = theme.spacing(2);
   const headerHeight = theme.spacing(7);
+
   return {
     contentRoot: {
       padding: generalMargin,
@@ -36,17 +38,19 @@ const useStyles = makeStyles((theme) => {
       justifyContent: "space-between",
       flexWrap: "wrap",
       alignItems: "center",
-      fontSize: 20
+      fontSize: theme.typography.h4.fontSize
     },
     mainChart: {
       backgroundColor: "mintcream",
-      boxSizing: "border-box",
-      transition,
-      width: (props) => props.mainChartWidth,
+      transitionTimingFunction,
+      transitionDuration,
+      width: (props) =>
+        props.isSideOpen ? props.width - initialSideWidth : props.width,
       height: (props) => props.outsideHeight - generalMargin * 2 - headerHeight
     },
     chartSide: {
-      transition,
+      transitionTimingFunction,
+      transitionDuration,
       backgroundColor: "teal",
       width: initialSideWidth,
       position: "absolute",
@@ -54,46 +58,58 @@ const useStyles = makeStyles((theme) => {
       top: 0,
       bottom: 0,
       transform: (props) =>
-        `translate(${props.sideWidth === 0 ? `${initialSideWidth}px` : 0})`
+        props.isSideOpen ? null : `translate(${initialSideWidth}px)`
     }
   };
 });
 
-const Content = ({ onAddChart, width, outsideHeight }) => {
-  const [sideWidth, setSideWidth] = useState(initialSideWidth);
-  const [mainChartWidth, setMainChartWidth] = useState(width - sideWidth);
-
+const Content = ({ onChangeExtraCharts, width, outsideHeight }) => {
+  const [isSideOpen, setIsSideOpen] = useState(true);
   const [arrayToAdd, setArrayToAdd] = useState([]);
+  const [widthAnimationDisabled, setWidthAnimationDisabled] = useState(true);
+
+  const timer = useRef();
+
+  useEffect(
+    () => () => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
-    onAddChart();
-  }, [arrayToAdd, onAddChart]);
+    onChangeExtraCharts();
+  }, [arrayToAdd, onChangeExtraCharts]);
 
-  useEffect(() => {
-    setMainChartWidth(width - sideWidth);
-  }, [width, sideWidth]);
+  const classes = useStyles({
+    outsideHeight,
+    isSideOpen,
+    width
+  });
 
-  const classes = useStyles({ sideWidth, mainChartWidth, outsideHeight });
-
+  const onToggleSide = () => {
+    setWidthAnimationDisabled(false);
+    setIsSideOpen((prevState) => !prevState);
+    timer.current = setTimeout(() => {
+      setWidthAnimationDisabled(true);
+    }, transitionDuration);
+  };
   return (
     <div className={classes.contentRoot}>
       <div className={classes.mainChartWrapper}>
         <div className={classes.chartHeader}>
           chart header
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-              setSideWidth((prevState) =>
-                prevState === initialSideWidth ? 0 : initialSideWidth
-              );
-            }}
-          >
+          <Button color="primary" variant="contained" onClick={onToggleSide}>
             toggle side
           </Button>
         </div>
         <div className={classes.mainChartInnerWrapper}>
-          <div className={classes.mainChart}>
+          <div
+            className={classes.mainChart}
+            style={widthAnimationDisabled ? { transition: "none" } : null}
+          >
             <InnerControls
               onChangeArray={(newArray) => {
                 setArrayToAdd(newArray);

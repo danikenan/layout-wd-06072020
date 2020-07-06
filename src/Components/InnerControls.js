@@ -21,7 +21,7 @@ const InnerControls = ({ onChangeArray }) => {
   return (
     <div className={classes.root}>
       <div className={classes.text}>
-        this component gets its dimensions from the outside
+        this component gets its dimensions calculated from the outside
       </div>
       <TextField
         value={numOfItemsToAdd}
