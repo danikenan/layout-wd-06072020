@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => {
 
 const Content = ({ onChangeExtraCharts, width, outsideHeight }) => {
   const [isSideOpen, setIsSideOpen] = useState(true);
-  const [arrayToAdd, setArrayToAdd] = useState([]);
+  const [extraChartsARray, setExtraChartsARray] = useState([]);
   const [widthAnimationDisabled, setWidthAnimationDisabled] = useState(true);
 
   const timer = useRef();
@@ -81,7 +81,7 @@ const Content = ({ onChangeExtraCharts, width, outsideHeight }) => {
 
   useEffect(() => {
     onChangeExtraCharts();
-  }, [arrayToAdd, onChangeExtraCharts]);
+  }, [extraChartsARray, onChangeExtraCharts]);
 
   const classes = useStyles({
     outsideHeight,
@@ -96,6 +96,7 @@ const Content = ({ onChangeExtraCharts, width, outsideHeight }) => {
       setWidthAnimationDisabled(true);
     }, transitionDuration);
   };
+
   return (
     <div className={classes.contentRoot}>
       <div className={classes.mainChartWrapper}>
@@ -112,14 +113,14 @@ const Content = ({ onChangeExtraCharts, width, outsideHeight }) => {
           >
             <InnerControls
               onChangeArray={(newArray) => {
-                setArrayToAdd(newArray);
+                setExtraChartsARray(newArray);
               }}
             />
           </div>
           <div className={classes.chartSide}>side</div>
         </div>
       </div>
-      {arrayToAdd.map(() => (
+      {extraChartsARray.map(() => (
         <ExtraChart />
       ))}
     </div>

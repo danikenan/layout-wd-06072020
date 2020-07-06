@@ -4,20 +4,16 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "slategray",
-    height: 200,
+    height: theme.spacing(30),
     flex: 1,
-    marginTop: 30
+    marginTop: theme.spacing(2)
   }
 }));
 
 const ExtraChart = (props) => {
   const classes = useStyles();
 
-  return (
-    <div className={classes.root}>
-      <div />
-    </div>
-  );
+  return <div className={classes.root} />;
 };
 
 export default ExtraChart;

@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     overflow: "auto"
   },
-  contentWrapper: {
+  contentOuterWrapper: {
     flexDirection: "column",
     backgroundColor: "gainsboro",
     flex: 1,
@@ -36,12 +36,11 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     display: "flex"
   },
-  content: {
+  contentWrapper: {
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    flex: 1,
-    overflow: "visible"
+    flex: 1
   }
 }));
 
@@ -60,8 +59,8 @@ const MainLayout = (props) => {
         <div className={classes.navbar}></div>
         <ReactResizeDetector handleHeight>
           {({ height }) => (
-            <div className={classes.contentWrapper}>
-              <div className={classes.content}>
+            <div className={classes.contentOuterWrapper}>
+              <div className={classes.contentWrapper}>
                 <Content
                   outsideHeight={height}
                   onChangeExtraCharts={handleAddChart}
