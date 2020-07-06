@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Content from "./Content";
+import { useDimensions } from "../Hooks/useDimensions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "lightblue"
   },
   navbar: {
-    backgroundColor: "honeydew",
+    backgroundColor: "whitesmoke",
     width: 200,
     overflow: "auto"
   },
@@ -42,23 +44,22 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     flex: 1,
     overflow: "visible"
-  },
-  highSomething: {
-    height: 2000
   }
 }));
 
 const MainLayout = (props) => {
   const classes = useStyles();
+  const contentWrapperRef = useRef(null);
 
+  const [dimensions] = useDimensions(contentWrapperRef);
   return (
     <div className={classes.root}>
       <div className={classes.header}></div>
       <div className={classes.main}>
         <div className={classes.navbar}></div>
-        <div className={classes.contentWrapper}>
+        <div className={classes.contentWrapper} ref={contentWrapperRef}>
           <div className={classes.content}>
-            <div className={classes.highSomething}></div>
+            <Content dimensions={dimensions} />
           </div>
         </div>
       </div>
